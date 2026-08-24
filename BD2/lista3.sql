@@ -17,3 +17,6 @@ where nome ilike '%Silva' and anoentrada = 2022
 --q5
 select count(*) from aluno
 where anoentrada = 2021 and genero = 'Masculino'
+
+
+--Tipo money :: converter para numerico 1000::Money ou :: depois do campo where ::NUMERIC
