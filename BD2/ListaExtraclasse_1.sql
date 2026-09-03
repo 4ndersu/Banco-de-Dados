@@ -1,3 +1,20 @@
+--LISTA EXTRACLASSE 1 - BANCO DE DADOS 2
+--Minimundo: Centro de Prototipagem Universitário
+
+--Enunciado: O código segue a estrutura da forma que foi ordenada de forma cronologica no enunciado
+
+--Enum para o tipo de usuário que usará o sistema, na questão fala estudante e pesquisador, decidi colocar professor também para ficar completo
+CREATE TYPE tipo_usuario AS ENUM ('Estudante', 'Pesquisador', 'Professor');
+
+--Tabela Usuario que fará as reservas 
+CREATE TABLE Usuario (
+	CPF VARCHAR(11) PRIMARY KEY,
+	Nome VARCHAR(100) NOT NULL,
+	Email VARCHAR(50) NOT NULL UNIQUE,
+	--Enum do tipo de usuário
+	Tipo tipo_usuario NOT NULL
+);
+
 --Tipo Enum para o tipo de universidade do minimundo
 CREATE TYPE TipoUni AS ENUM ('Publica', 'Particular');
 
@@ -8,7 +25,6 @@ CREATE TABLE Universidade (
 	Endereco VARCHAR(100) NOT NULL,
 	--Enum do tipo de universidade
 	Tipo TipoUni NOT NULL
-
 );
 
 --Tabela Laboratorio onde os equipamentos estão alocados
@@ -18,7 +34,7 @@ CREATE TABLE Laboratorio (
 	Sala INT NOT NULL,
 	Bloco CHAR(1) NOT NULL,
 	--Chave estrangeira para a tabela Universidade
-	UniveID INT,
+	UniveID INT NOT NULL,
 
 	--Constraint para aceitar somente salas válidas, visto que não existem salas negativas ou 0
 	CONSTRAINT sala_Valida CHECK(Sala > 0),
@@ -37,32 +53,32 @@ CREATE TABLE Equipamento (
 	Codigo INT PRIMARY KEY,
 	Nome VARCHAR(100) NOT NULL,
 	Valor DECIMAL(10,2) NOT NULL,
-	--Enum da situação do equipamento
+	--Enum da situação do equipamento, com valor padrão 'Disponivel'
 	situacao situacao_equipamento NOT NULL DEFAULT 'Disponivel',
-	LabID INT ,
+	LabID INT,
 
 	--Constraint para aceitar somente valores positivos de equipamentos
 	CONSTRAINT valor_positivo CHECK(Valor > 0),
 	--Chave estrangeira simples para um laboratório ter vários equipamentos, mas um equipamento só pode estar alocado em um laboratório
 	CONSTRAINT fk_Laboratorio FOREIGN KEY(LabID) REFERENCES Laboratorio(Codigo) ON DELETE SET NULL
-	--Constrain para que ao deletar um laboratório, os equipamentos alocados nele continuem existindo, com LabID NULL
-	
+	--Constrain para que ao deletar um laboratório, os equipamentos alocados nele continuem existindo, com LabID NULL	
 );
 
-CREATE TABLE Usuario (
-	CPF VARCHAR(11) PRIMARY KEY,
-	Nome VARCHAR(100) NOT NULL,
-	Email VARCHAR(50) NOT NULL
-);
-
+--Tabela Reserva que faz a relação entre o usuário e o equipamento
 CREATE TABLE Reserva (
 	IDReserva INT PRIMARY KEY,
-	DataInicio DATE,
-	DataFim DATE,
+	DataInicio TIMESTAMP NOT NULL,
+	DataFim TIMESTAMP NOT NULL,
+	--Chave estrangeira do CPF do usuário
 	CPFUsuario VARCHAR(11) NOT NULL,
-	IDEquipamento INT NOT NULL,
+	--Chave estrangeira do Id do equipamento
+	IDEquipamento INT,
 
-	CONSTRAINT datas_validas CHECK(DataFim > DataInicio)
+	--Constraint para aceitar somente datas validas definidas nas regras da questão
+	CONSTRAINT datas_validas CHECK(DataFim >= DataInicio),
+	--Chaves estrangeiras para o CPF do usuário e o ID do equipamento, com ON DELETE SET NULL em equipamento para manter os registros da reserva mesmo se o equipamento for deletado
+	CONSTRAINT fk_CPF FOREIGN KEY (CPFUsuario) REFERENCES Usuario(CPF),
+	CONSTRAINT fk_IDEquipamento FOREIGN KEY (IDEquipamento) REFERENCES Equipamento(Codigo) ON DELETE SET NULL
 );
 
 INSERT INTO Universidade (Codigo, Nome, Endereco, Tipo) VALUES
