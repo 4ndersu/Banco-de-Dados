@@ -60,8 +60,8 @@ CREATE TABLE Equipamento (
 	--Constraint para aceitar somente valores positivos de equipamentos
 	CONSTRAINT valor_positivo CHECK(Valor > 0),
 	--Chave estrangeira simples para um laboratório ter vários equipamentos, mas um equipamento só pode estar alocado em um laboratório
-	CONSTRAINT fk_Laboratorio FOREIGN KEY(LabID) REFERENCES Laboratorio(Codigo) ON DELETE SET NULL
-	--Constrain para que ao deletar um laboratório, os equipamentos alocados nele continuem existindo, com LabID NULL	
+	--Constrain para que ao deletar um laboratório, os equipamentos alocados nele continuem existindo, com LabID NULL
+	CONSTRAINT fk_Laboratorio FOREIGN KEY(LabID) REFERENCES Laboratorio(Codigo) ON DELETE SET NULL	
 );
 
 --Tabela Reserva que faz a relação entre o usuário e o equipamento
@@ -81,47 +81,120 @@ CREATE TABLE Reserva (
 	CONSTRAINT fk_IDEquipamento FOREIGN KEY (IDEquipamento) REFERENCES Equipamento(Codigo) ON DELETE SET NULL
 );
 
+----INSERTS----
+
+--Com sucesso
+--TABELA UNIVERSIDADE
 INSERT INTO Universidade (Codigo, Nome, Endereco, Tipo) VALUES
-(1, 'Universidade Federal', 'Av. Acadêmica, 100', 'Publica'),
-(2, 'Pontifícia Universidade', 'Rua Central, 500', 'Particular');
+(1, 'Universidade Federal do Agreste', 'Av. Bom Pastor, s/n - Garanhuns', 'Publica'),
+(2, 'Pontifícia Universidade Católica', 'Rua Dom Bosco, 100 - Centro', 'Particular'),
+(3, 'Universidade Estadual de Pernambuco', 'Rua Benfica, 455 - Madalena', 'Publica');
 
--- Inserções válidas (Blocos A, B ou C e Sala > 0)
+--TABELA USUARIO
+INSERT INTO Usuario (CPF, Nome, Email, Tipo) VALUES
+('11122233344', 'Lucas Andrade', 'lucas.andrade@email.com', 'Estudante'),
+('22233344455', 'Dra. Beatriz Santos', 'beatriz.santos@pesquisa.org', 'Pesquisador'),
+('33344455566', 'Prof. Carlos Eduardo', 'carlos.eduardo@universidade.edu', 'Professor'),
+('44455566677', 'Mariana Costa', 'mariana.costa@estudante.uf.br', 'Estudante'),
+('55566677788', 'Dr. Roberto Lima', 'roberto.lima@pesquisa.org', 'Pesquisador');
+
+--TABELA LABORATORIO
 INSERT INTO Laboratorio (Codigo, TipoLab, Sala, Bloco, UniveID) VALUES
-(10, 'Laboratório de Robótica', 101, 'A', 1),
-(20, 'Laboratório de Impressão 3D', 102, 'B', 1),
-(30, 'Laboratório de Eletrônica', 201, 'C', 2);
+(10, 'Laboratório de Impressão 3D e Prototipagem', 101, 'A', 1),
+(11, 'Laboratório de Mecatrônica e Robótica', 102, 'A', 1), --Mesmo bloco A
+(20, 'Laboratório de Circuitos Eletrônicos', 201, 'B', 1),
+(30, 'Laboratório de Realidade Virtual', 105, 'B', 2), --Mesmo bloco B
+(40, 'Laboratório de Sistemas Embarcados', 302, 'C', 3);
 
--- Tenta inserir Bloco 'D' (Viola a restrição bloco_valido)
-INSERT INTO Laboratorio (Codigo, TipoLab, Sala, Bloco, UniveID) 
-VALUES (40, 'Laboratório Invalido', 101, 'D', 1);
-
--- Tenta inserir Sala <= 0 (Viola a restrição sala_Valida)
-INSERT INTO Laboratorio (Codigo, TipoLab, Sala, Bloco, UniveID) 
-VALUES (50, 'Laboratório Invalido', -5, 'A', 1);
-
--- 1. Equipamento normal especificando todos os campos
+---TABELA EQUIPAMENTO
 INSERT INTO Equipamento (Codigo, Nome, Valor, situacao, LabID) VALUES
-(100, 'Impressora 3D Ender 3', 2500.00, 'Disponivel', 20),
-(101, 'Osciloscópio Digital', 4200.50, 'Em Uso', 30);
+(100, 'Impressora 3D Creality Ender 3', 2499.90, 'Disponivel', 10),
+(101, 'Cortadora a Laser CO2 60W', 18500.00, 'Em Uso', 10),
+(102, 'Multímetro Digital de Bancada', 1000.00, 'Disponivel', 20),
+(103, 'Osciloscópio Digital Agilent 100MHz', 4350.00, 'Disponivel', 20),
+(104, 'Kit de Desenvolvimento Arduino Avançado', 320.50, DEFAULT, 11), --Assume 'Disponivel'
+(105, 'Braço Robótico Industrial 6 Eixos', 35000.00, 'Manutencao', 11),
+(106, 'Scanner 3D de Alta Precisão', 10000.00, 'Disponivel', 10),
+(107, 'Óculos de Realidade Virtual Meta Quest 3', 5200.00, 'Disponivel', 30),
+(108, 'Estação de Solda Frequência Externa', 890.00, 'Baixado', 20),
+(109, 'Impressora 3D Resina Elegoo Mars', 3100.00, DEFAULT, 10);--Assume 'Disponivel' também
 
--- 2. Equipamento sem informar 'situacao' (Deve assumir DEFAULT 'Disponivel')
-INSERT INTO Equipamento (Codigo, Nome, Valor, LabID) VALUES
-(102, 'Kit Arduino Avançado', 350.00, 10);
+--TABELA RESERVA
+INSERT INTO Reserva (IDReserva, DataInicio, DataFim, CPFUsuario, IDEquipamento) VALUES
+(1, '2026-09-10 08:00:00', '2026-09-10 12:00:00', '11122233344', 100),
+(2, '2026-09-11 14:00:00', '2026-09-11 18:00:00', '22233344455', 101),
+(3, '2026-09-12 09:00:00', '2026-09-12 11:30:00', '33344455566', 102),
+(4, '2026-09-15 10:00:00', '2026-09-15 10:00:00', '44455566677', 103), --Mesmo horário início/fim
+(5, '2026-09-20 13:00:00', '2026-09-22 17:00:00', '55566677788', 105);
 
--- 3. Equipamento com outra situação do Enum
-INSERT INTO Equipamento (Codigo, Nome, Valor, situacao, LabID) VALUES
-(103, 'Braço Robótico Industrial', 15000.00, 'Manutencao', 10);
+--Até aqui consegue executar de uma vez no PostGre
 
--- Tenta inserir Valor <= 0 (Viola a restrição valor_positivo)
-INSERT INTO Equipamento (Codigo, Nome, Valor, situacao, LabID) 
-VALUES (104, 'Multímetro Invalido', 0.00, 'Disponivel', 30);
+--Vão falhar
 
--- Tenta inserir uma situação inexistente no ENUM (Viola o tipo situacao_equipamento)
-INSERT INTO Equipamento (Codigo, Nome, Valor, situacao, LabID) 
-VALUES (105, 'Torno CNC', 8000.00, 'Quebrado', 20);
+--TABELA USUÁRIO
+--Vai violar o UNIQUE de cliente, colocando um email que já existe
+INSERT INTO Usuario (CPF, Nome, Email, Tipo) VALUES 
+('99988877766', 'Novo Usuario', 'lucas.andrade@email.com', 'Estudante');--Email duplicado
 
-SELECT * FROM Universidade
-SELECT * FROM Laboratorio
+--Vai Violar o ENUM do tipo de usuário, colocar um tipo que não existe
+INSERT INTO Usuario (CPF, Nome, Email, Tipo) VALUES 
+('88877766655', 'Pedro Santos', 'pedro@email.com', 'Administrador');--Tipo ADM não definido
+
+--TABELA LABORATORIO
+--Vai violar a Constraint Check, colocando um bloco não permitido
+INSERT INTO Laboratorio (Codigo, TipoLab, Sala, Bloco, UniveID) VALUES 
+(50, 'Laboratório de Biologia', 101, 'D', 1);--Bloco D
+
+--Vai violar a Constraint Check colocando uma sala com valor zero ou negativa 
+INSERT INTO Laboratorio (Codigo, TipoLab, Sala, Bloco, UniveID) VALUES 
+(51, 'Laboratório de Química', 0, 'A', 1);--Sala 0
+
+--Vai violar FK colocando um valor que não existe na tabela pai Universidade
+INSERT INTO Laboratorio (Codigo, TipoLab, Sala, Bloco, UniveID) VALUES 
+(52, 'Laboratório de Física', 102, 'B', 99);--ID 99
+
+--TABELA EQUIPAMENTO
+--Vai violar a Constraint Check colocando um valor 0 para um equipamento
+INSERT INTO Equipamento (Codigo, Nome, Valor, situacao, LabID) VALUES 
+(200, 'Multímetro Digital', 0.00, 'Disponivel', 20);--Valor 0.0
+
+--Também vai violar a Constraint Check, dessa vez colocando um valor negativo
+INSERT INTO Equipamento (Codigo, Nome, Valor, situacao, LabID) VALUES 
+(201, 'Alicate de Crimpagem', -150.00, 'Disponivel', 20);--Valor -150.0
+
+--Vai violar o ENUM do tipo de equipamento colocando uma situacao que não existe
+INSERT INTO Equipamento (Codigo, Nome, Valor, situacao, LabID) VALUES 
+(202, 'Fonte de Bancada', 1200.00, 'Quebrado', 20);-- Situacao 'Quebrado'
+
+--TABELA RESERVA
+--Vai violar a Constraint Check de data válida colocando uma data de fim menor que a data de inicio
+INSERT INTO Reserva (IDReserva, DataInicio, DataFim, CPFUsuario, IDEquipamento) VALUES 
+(10, '2026-09-10 12:00:00', '2026-09-06 08:00:00', '11122233344', 100);--Data fim 4 dias menor
+
+--Vai violar a FK colocando um cpf de usuário inexistente
+INSERT INTO Reserva (IDReserva, DataInicio, DataFim, CPFUsuario, IDEquipamento) VALUES 
+(11, '2026-09-10 08:00:00', '2026-09-10 12:00:00', '00000000000', 100); --CPF 00000000000
+
+--TESTES DE REGISTROS
+
+--Exclusão de Laboratório mantendo o Equipamento
+DELETE FROM Laboratorio
 SELECT * FROM Equipamento
 
-DELETE FROM laboratorio
+--Exclusão de um Equipamento mantendo o registro
+DELETE FROM Equipamento
+SELECT * FROM Reserva
+
+--a)BETWEEN captura os equipamentos que valem exatamente 1000 e 10000
+SELECT * FROM Equipamento WHERE Valor BETWEEN 1000.00 AND 10000
+ORDER BY Valor DESC
+
+--b)Mesma saída de a), com a diferença que SYMMETRIC vai corrigir o erro de colocar o limite inferior maior que o superior
+SELECT * FROM Equipamento WHERE Valor BETWEEN SYMMETRIC 10000.00 AND 1000.00
+ORDER BY Valor DESC
+
+--c)Aqui vai mostrar todos os equipamentos que valem menos que 15000 e mais que 20000 por causa da negação de BETWEEN
+SELECT * FROM Equipamento WHERE Valor NOT BETWEEN 1500.00 AND 20000.00
+
+--d)Vai pegar a primeira letra(left, 1) do nome do equipamento e mostrar todos os equipamentos com nome entre E e S
+SELECT * FROM Equipamento WHERE LEFT(Nome, 1) BETWEEN 'E' AND 'S'
