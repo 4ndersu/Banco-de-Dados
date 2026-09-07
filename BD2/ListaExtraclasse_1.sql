@@ -177,6 +177,7 @@ INSERT INTO Reserva (IDReserva, DataInicio, DataFim, CPFUsuario, IDEquipamento) 
 
 --TESTES DE REGISTROS
 
+--Optei por excluir totalmente os registros de Laboratorio e Equipamento, na lógica se encaixa melhor com o contexto de um equipamento e laboratorio serem excluidos para preservar os Equipamentos e Reservas
 --Exclusão de Laboratório mantendo o Equipamento
 DELETE FROM Laboratorio
 SELECT * FROM Equipamento
@@ -190,10 +191,10 @@ SELECT Codigo, Nome, Valor FROM Equipamento WHERE Valor BETWEEN 1000.00 AND 1000
 ORDER BY Valor DESC
 
 --b)Mesma saída de a), com a diferença que SYMMETRIC vai corrigir o erro de colocar o limite inferior maior que o superior
-SELECT * FROM Equipamento WHERE Valor BETWEEN SYMMETRIC 10000.00 AND 1000.00
+SELECT Codigo, Nome, Valor FROM Equipamento WHERE Valor BETWEEN SYMMETRIC 10000.00 AND 1000.00
 ORDER BY Valor DESC
 
---c)Aqui vai mostrar todos os equipamentos que valem menos que 15000 e mais que 20000 por causa da negação de BETWEEN
+--c)Aqui vai mostrar todos os equipamentos que valem menos que 1500 ou mais que 20000 por causa da negação de BETWEEN
 SELECT * FROM Equipamento WHERE Valor NOT BETWEEN 1500.00 AND 20000.00
 
 --d)Vai pegar a primeira letra(left, 1) do nome do equipamento e mostrar todos os equipamentos com nome entre E e S
