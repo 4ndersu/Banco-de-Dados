@@ -186,7 +186,7 @@ SELECT * FROM Equipamento
 DELETE FROM Equipamento
 SELECT * FROM Reserva
 
---a)BETWEEN captura os equipamentos que valem exatamente 1000 e 10000
+--a)BETWEEN captura os equipamentos que valem exatamente 1000 e 10000 em ordem decrescente
 SELECT Codigo, Nome, Valor FROM Equipamento WHERE Valor BETWEEN 1000.00 AND 10000.00
 ORDER BY Valor DESC
 
