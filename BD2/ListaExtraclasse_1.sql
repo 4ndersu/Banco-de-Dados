@@ -22,6 +22,7 @@ CREATE TYPE TipoUni AS ENUM ('Publica', 'Particular');
 CREATE TABLE Universidade (
 	Codigo INT PRIMARY KEY,
 	Nome VARCHAR(100) NOT NULL,
+	--Nao está normalizado, mas para o contexto da questão não afeta nada
 	Endereco VARCHAR(100) NOT NULL,
 	--Enum do tipo de universidade
 	Tipo TipoUni NOT NULL
