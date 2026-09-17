@@ -187,13 +187,8 @@ SELECT * FROM Equipamento
 DELETE FROM Equipamento
 SELECT * FROM Reserva
 
-<<<<<<< HEAD
 --a)BETWEEN captura os equipamentos que valem exatamente 1000 e 10000
 SELECT Codigo, Nome, Valor FROM Equipamento WHERE Valor BETWEEN 1000.00 AND 10000
-=======
---a)BETWEEN captura os equipamentos que valem exatamente 1000 e 10000 em ordem decrescente
-SELECT Codigo, Nome, Valor FROM Equipamento WHERE Valor BETWEEN 1000.00 AND 10000.00
->>>>>>> ab6a136c008d0c11b8263d12e52b4ea72a4a5408
 ORDER BY Valor DESC
 
 --b)Mesma saída de a), com a diferença que SYMMETRIC vai corrigir o erro de colocar o limite inferior maior que o superior

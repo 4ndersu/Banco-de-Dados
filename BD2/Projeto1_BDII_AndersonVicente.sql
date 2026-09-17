@@ -33,7 +33,7 @@ CREATE TABLE Obra (
     dataLancamento DATE NOT NULL,
     --Check constaint para classificacao indicativa entre 0 e 18 anos, e seu orçamento ser positivo
     classificacaoIndicativa INT NOT NULL CONSTRAINT classificacao_valida CHECK (classificacaoIndicativa BETWEEN 0 AND 18),
-    orcamento DECIMAL(10,2) NOT NULL CONSTRAINT orcamento_positivo CHECK (orcamento > 0.0),
+    orcamento DECIMAL(15,2) NOT NULL CONSTRAINT orcamento_positivo CHECK (orcamento > 0.0),
     idEstudio VARCHAR(9) NOT NULL,
 
     --Chave estrangeira para associar obras a somente um estúdio especifico
@@ -55,8 +55,8 @@ CREATE TABLE Elenco_Obra (
     idPessoa VARCHAR(11),
     funcao funcao NOT NULL,
     --Check constraints para garantir que o salário e o bônus sejam valores positivos
-    salario DECIMAL(10,2) NOT NULL DEFAULT 0.0 CONSTRAINT salario_positivo CHECK (salario >= 0.0),
-    bonus DECIMAL(10,2) NOT NULL DEFAULT 0.0 CONSTRAINT bonus_positivo CHECK (bonus >= 0.0),
+    salario DECIMAL(15,2) NOT NULL DEFAULT 0.0 CONSTRAINT salario_positivo CHECK (salario >= 0.0),
+    bonus DECIMAL(15,2) NOT NULL DEFAULT 0.0 CONSTRAINT bonus_positivo CHECK (bonus >= 0.0),
 
     --Chave primária composta para garantir a unicidade da combinação de obra e pessoa
     CONSTRAINT pk_composta PRIMARY KEY (idObra, idPessoa),
@@ -149,3 +149,128 @@ CREATE TABLE Anuncio_Obra (
     CONSTRAINT fk_anuncio_obra_anuncio FOREIGN KEY (idAnuncio) REFERENCES Anuncio(idAnuncio),
     CONSTRAINT fk_anuncio_obra_obra FOREIGN KEY (idObra) REFERENCES Obra(idObra)
 );
+
+-- ==================================================
+-- 1. POPULANDO A TABELA: Estudio (8 registros)
+-- ==================================================
+INSERT INTO Estudio (idEstudio, nome, paisOrigem, dataFundacao, email) VALUES
+('EST000001', 'Warner Bros. Pictures', 'Estados Unidos', '1923-04-04', 'contact@warnerbros.com'),
+('EST000002', 'Universal Pictures', 'Estados Unidos', '1912-04-30', 'info@universalpictures.com'),
+('EST000003', 'O2 Filmes', 'Brasil', '1991-01-15', 'contato@o2filmes.com.br'),
+('EST000004', 'Toho Co., Ltd.', 'Japao', '1932-08-12', 'international@toho.co.jp'),
+('EST000005', 'A24 Films', 'Estados Unidos', '2012-08-20', 'info@a24films.com'),
+('EST000006', 'Gullane Entretenimento', 'Brasil', '1996-05-10', 'gullane@gullane.com.br'),
+('EST000007', 'Studio Ghibli', 'Japao', '1985-06-15', 'contact@ghibli.jp'),
+('EST000008', 'BBC Studios', 'Reino Unido', '1957-04-01', 'info@bbcstudios.com');
+
+-- ==================================================
+-- 2. POPULANDO A TABELA: Obra (8 registros)
+-- ==================================================
+INSERT INTO Obra (idObra, titulo, sinopse, Genero, TipoObra, dataLancamento, classificacaoIndicativa, orcamento, idEstudio) VALUES
+('OBR000001', 'Inception', 'Um ladrão que rouba segredos corporativos através do uso da tecnologia de compartilhamento de sonhos.', 'Ficcao Cientifica', 'Filme', '2010-07-16', 14, 160000000.00, 'EST000001'),
+('OBR000002', 'Oppenheimer', 'A história do físico americano J. Robert Oppenheimer e seu papel no Projeto Manhattan.', 'Drama', 'Filme', '2023-07-20', 16, 100000000.00, 'EST000002'),
+('OBR000003', 'Cidade de Deus', 'Dois meninos crescendo em um bairro violento do Rio de Janeiro encontram caminhos diferentes na vida.', 'Drama', 'Filme', '2002-08-30', 18, 3300000.00, 'EST000003'),
+('OBR000004', 'A Viagem de Chihiro', 'Uma menina de 10 anos vagueia por um mundo governado por deuses, bruxas e espíritos.', 'Aventura', 'Animacao', '2001-07-20', 0, 19000000.00, 'EST000007'),
+('OBR000005', 'Free Solo', 'Documentário sobre o escalador Alex Honnold tentando escalar o El Capitan sem cordas.', 'Aventura', 'Documentario', '2018-09-28', 10, 2000000.00, 'EST000005'),
+('OBR000006', 'Sintonia', 'Três amigos da favela buscam seus sonhos no funk, no tráfico e na religião.', 'Drama', 'Serie', '2019-08-09', 16, 8000000.00, 'EST000006'),
+('OBR000007', 'Planet Earth II', 'Série documental sobre a vida selvagem e os habitats naturais do planeta Terra.', 'Aventura', 'Documentario', '2016-11-06', 0, 10000000.00, 'EST000008'),
+('OBR000008', 'Godzilla Minus One', 'O Japão pós-guerra precisa enfrentar uma nova e terrível ameaça gigante.', 'Acao', 'Filme', '2023-11-03', 12, 15000000.00, 'EST000004');
+
+-- ==================================================
+-- 3. POPULANDO A TABELA: Elenco (8 registros)
+-- ==================================================
+INSERT INTO Elenco (idPessoa, nome, nacionalidade, dataNasc, email) VALUES
+('PES00000001', 'Leonardo DiCaprio', 'Norte-Americano', '1974-11-11', 'leonardo@actor.com'),
+('PES00000002', 'Christopher Nolan', 'Britanico', '1970-07-30', 'nolan@director.com'),
+('PES00000003', 'Cillian Murphy', 'Irlandes', '1976-05-25', 'cillian@actor.com'),
+('PES00000004', 'Alexandre Rodrigues', 'Brasileiro', '1983-05-21', 'alexandre@ator.com.br'),
+('PES00000005', 'Fernando Meirelles', 'Brasileiro', '1955-11-09', 'meirelles@o2filmes.com.br'),
+('PES00000006', 'Alex Honnold', 'Norte-Americano', '1985-08-17', 'alex@honnold.com'),
+('PES00000007', 'Hayao Miyazaki', 'Japao', '1941-01-05', 'miyazaki@ghibli.jp'),
+('PES00000008', 'David Attenborough', 'Britanico', '1926-05-08', 'david@attenborough.org');
+
+-- ==================================================
+-- 4. POPULANDO A TABELA: Elenco_Obra (8 registros)
+-- ==================================================
+INSERT INTO Elenco_Obra (idObra, idPessoa, Funcao, salario, bonus) VALUES
+('OBR000001', 'PES00000001', 'Ator', 15000000.00, 2000000.00),
+('OBR000001', 'PES00000002', 'Diretor', 20000000.00, 5000000.00),
+('OBR000002', 'PES00000003', 'Ator', 10000000.00, 1000000.00),
+('OBR000002', 'PES00000002', 'Roteirista', 12000000.00, 2000000.00),
+('OBR000003', 'PES00000005', 'Diretor', 500000.00, 50000.00),
+('OBR000004', 'PES00000007', 'Roteirista', 2500000.00, 400000.00),
+('OBR000005', 'PES00000006', 'Produtor', 1800000.00, 300000.00),
+('OBR000007', 'PES00000008', 'Ator', 1200000.00, 200000.00);
+
+-- ==================================================
+-- 5. POPULANDO A TABELA: Plano (Apenas 3 registros conforme restrição CHECK)
+-- ==================================================
+INSERT INTO Plano (idPlano, tipoPlano, valorMensal, qualidadeMax, maxTelas, exibeAnuncios) VALUES
+('PLN000001', 'Basico', 9.99, '720p', '1', 'Sim'),
+('PLN000002', 'Padrao', 19.99, '1080p', '2', 'Nao'),
+('PLN000003', 'Premium', 29.99, '4K', '4', 'Nao');
+
+-- ==================================================
+-- 6. POPULANDO A TABELA: Usuario (8 registros)
+-- ==================================================
+INSERT INTO Usuario (idUsuario, nome, telefone, email, senha, idPlano) VALUES
+('USR00000001', 'Carlos Silva', '11987654321', 'carlos.silva@email.com', 'Senha123', 'PLN000001'),
+('USR00000002', 'Mariana Santos', '21976543210', 'mariana.santos@email.com', 'Pass321', 'PLN000002'),
+('USR00000003', 'Roberto Rocha', '31965432109', 'roberto.rocha@email.com', 'Rob@2024', 'PLN000003'),
+('USR00000004', 'Fernanda Lima', '41954321098', 'fernanda.lima@email.com', 'Fer#8899', 'PLN000001'),
+('USR00000005', 'Lucas Oliveira', '51943210987', 'lucas.oliveira@email.com', 'Luc12345', 'PLN000002'),
+('USR00000006', 'Patricia Souza', '61932109876', 'patricia.souza@email.com', 'PatS2024', 'PLN000003'),
+('USR00000007', 'Gabriel Costa', '71921098765', 'gabriel.costa@email.com', 'Gabe9988', 'PLN000001'),
+('USR00000008', 'Beatriz Alves', '81910987654', 'beatriz.alves@email.com', 'BiaPass77', 'PLN000002');
+
+-- ==================================================
+-- 7. POPULANDO A TABELA: Perfil (8 registros)
+-- ==================================================
+INSERT INTO Perfil (idPerfil, nomePerfil, tipoPerfil, idUsuario) VALUES
+('P1', 'Carlos', 'Adulto', 'USR00000001'),
+('P2', 'Carlinhos', 'Infantil', 'USR00000001'),
+('P3', 'Mariana', 'Adulto', 'USR00000002'),
+('P4', 'Familia Santos', 'Familia', 'USR00000002'),
+('P5', 'Beto', 'Teen', 'USR00000003'),
+('P6', 'Paty', 'Adulto', 'USR00000006'),
+('P7', 'Gabi', 'Teen', 'USR00000007'),
+('P8', 'BiaKids', 'Infantil', 'USR00000008');
+
+-- ==================================================
+-- 8. POPULANDO A TABELA: Anunciante (8 registros)
+-- ==================================================
+INSERT INTO Anunciante (idAnunciante, nomeEmpresa, paisSede, email) VALUES
+('12345678000195', 'Coca-Cola Brasil', 'Brasil', 'mkt@cocacola.com.br'),
+('98765432000110', 'Samsung Electronics', 'Coreia do Sul', 'ad@samsung.com'),
+('45678912000133', 'Nike do Brasil', 'Estados Unidos', 'comercial@nike.com.br'),
+('11223344000155', 'Ambev S.A.', 'Brasil', 'contato@ambev.com.br'),
+('66778899000122', 'Amazon Services', 'Estados Unidos', 'ads@amazon.com'),
+('33445566000188', 'Itaú Unibanco', 'Brasil', 'marketing@itau.com.br'),
+('55667788000144', 'Sony Electronics', 'Japao', 'ads@sony.com'),
+('77889900000166', 'Natura Cosméticos', 'Brasil', 'contato@natura.com.br');
+
+-- ==================================================
+-- 9. POPULANDO A TABELA: Anuncio (8 registros)
+-- ==================================================
+INSERT INTO Anuncio (idAnuncio, titulo, duracaoSegundos, videoUrl, idAnunciante) VALUES
+(101, 'Abra a Felicidade - Verao', 30, 'https://cdn.ads.com/cocacola_verao.mp4', '12345678000195'),
+(102, 'Novo Galaxy S24 Ultra', 15, 'https://cdn.ads.com/samsung_s24.mp4', '98765432000110'),
+(103, 'Just Do It - Corra Mais', 30, 'https://cdn.ads.com/nike_run.mp4', '45678912000133'),
+(104, 'Guaraná Antarctica 0', 15, 'https://cdn.ads.com/guarana_zero.mp4', '11223344000155'),
+(105, 'AWS Cloud Solutions', 45, 'https://cdn.ads.com/aws_cloud.mp4', '66778899000122'),
+(106, 'Feito de Futuro - Itaú', 30, 'https://cdn.ads.com/itau_futuro.mp4', '33445566000188'),
+(107, 'PlayStation 5 Slim', 20, 'https://cdn.ads.com/sony_ps5.mp4', '55667788000144'),
+(108, 'Bem Estar Bem - Natura', 30, 'https://cdn.ads.com/natura_viver.mp4', '77889900000166');
+
+-- ==================================================
+-- 10. POPULANDO A TABELA: Anuncio_Obra (8 registros)
+-- ==================================================
+INSERT INTO Anuncio_Obra (idAnuncio, idObra, momentoExibicaoSegundos, maxExibicoes) VALUES
+(101, 'OBR000001', 0, 5000),
+(102, 'OBR000001', 1800, 2000),
+(103, 'OBR000003', 0, 10000),
+(104, 'OBR000003', 3600, 8000),
+(105, 'OBR000005', 0, 3000),
+(106, 'OBR000006', 600, 15000),
+(107, 'OBR000008', 0, 4000),
+(108, 'OBR000006', 1200, 7000);
