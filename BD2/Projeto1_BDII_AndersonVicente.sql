@@ -35,7 +35,7 @@ CREATE TABLE Obra (
     classificacaoIndicativa INT NOT NULL CONSTRAINT classificacao_valida CHECK (classificacaoIndicativa BETWEEN 0 AND 18),
     orcamento DECIMAL(15,2) NOT NULL CONSTRAINT orcamento_positivo CHECK (orcamento > 0.0),
     idEstudio VARCHAR(9) NOT NULL,
-
+	
     --Chave estrangeira para associar obras a somente um estúdio especifico
     CONSTRAINT fk_estudio FOREIGN KEY (idEstudio) REFERENCES Estudio(idEstudio)
 );
@@ -166,7 +166,7 @@ INSERT INTO Estudio (idEstudio, nome, paisOrigem, dataFundacao, email) VALUES
 -----------Tabela Obra(11 registros)------------
 INSERT INTO Obra (idObra, titulo, sinopse, Genero, TipoObra, dataLancamento, classificacaoIndicativa, orcamento, idEstudio) VALUES
 ('OBR000001', 'Inception', 'Um ladrão que rouba segredos corporativos através do uso da tecnologia de compartilhamento de sonhos.', 'Ficcao Cientifica', 'Filme', '2010-07-16', 14, 160000000.00, 'EST000001'),
-('OBR000002', 'Oppenheimer', 'A história do físico americano J. Robert Oppenheimer e seu papel no Projeto Manhattan.', 'Drama', 'Filme', '2023-07-20', 16, 100000000.00, 'EST000002'),
+('OBR000002', 'Oppenheimer', 'A história do físico americano J. Robert Oppenheimer e seu papel no Projeto Manhattan na Segunda Guerra Mundial.', 'Drama', 'Filme', '2023-07-20', 16, 100000000.00, 'EST000002'),
 ('OBR000003', 'Cidade de Deus', 'Dois meninos crescendo em um bairro violento do Rio de Janeiro encontram caminhos diferentes na vida.', 'Drama', 'Filme', '2002-08-30', 18, 3300000.00, 'EST000003'),
 ('OBR000004', 'A Viagem de Chihiro', 'Uma menina de 10 anos vagueia por um mundo governado por deuses, bruxas e espíritos.', 'Aventura', 'Animacao', '2001-07-20', 0, 19000000.00, 'EST000007'),
 ('OBR000005', 'Marty Supreme', 'Cinebiografia ficcional baseada na vida do jogador profissional de pingue-pongue Marty Reisman.', 'Comedia', 'Filme', '2025-12-25', 14, 70000000.00, 'EST000005'),
@@ -189,7 +189,7 @@ INSERT INTO Elenco (idPessoa, nome, nacionalidade, dataNasc, email) VALUES
 ('PES00000008', 'David Attenborough', 'Britanico', '1926-05-08', 'david@attenborough.org'),
 ('PES00000009', 'Timothée Chalamet', 'Franco-Americano', '1995-12-27', 'timothee@chalamet.com'),
 ('PES00000010', 'Roger Deakins', 'Britanico', '1949-05-24', 'deakins@cinematography.com'),
-('PES00000011', 'Lee Smith', 'Australiano', '1960-00-00', 'lee.smith@editor.com'),
+('PES00000011', 'Lee Smith', 'Australiano', '1960-05-08', 'lee.smith@editor.com'),
 ('PES00000012', 'Linus Sandgren', 'Sueco', '1972-12-03', 'linus@sandgren.com');
 
 -----------Tabela Elenco_Obra (13 registros)------------
@@ -306,3 +306,41 @@ INSERT INTO Anuncio_Obra (idAnuncio, idObra, momentoExibicaoSegundos, maxExibico
 -----Perfil com tipo que não existe-------
 INSERT INTO Perfil (idPerfil, nomePerfil, tipoPerfil, idUsuario) VALUES 
 ('P9', 'Perfil Pet', 'Gatos', 'USR00000001');
+
+---Consulta 1: pesquisar obras do gênero Drama, ordenadas pela data de lançamento mais recente
+SELECT titulo, sinopse, genero, tipoObra, datalancamento, classificacaoindicativa FROM OBRA 
+WHERE genero IN ('Drama') ORDER BY datalancamento DESC;
+
+---Consulta 2: pesquisar obras de acordo com a palavra chave de seu titulo ou sinopse
+--Exemplo 1: palavra "vida"
+SELECT titulo, sinopse, genero, tipoObra, datalancamento, classificacaoindicativa FROM OBRA 
+WHERE titulo ILIKE '%vida%' OR sinopse ILIKE '%vida%';
+
+--Exemplo 2: palavra "morte"
+SELECT titulo, sinopse, genero, tipoObra, datalancamento, classificacaoindicativa FROM OBRA 
+WHERE titulo ILIKE '%morte%' OR sinopse ILIKE '%morte%';
+
+--Exemplo 3: palavra "guerra"
+SELECT titulo, sinopse, genero, tipoObra, datalancamento, classificacaoindicativa FROM OBRA 
+WHERE titulo ILIKE '%guerra%' OR sinopse ILIKE '%guerra%';
+
+---Consulta 3: pesquisar obras lançadas entre os anos 2000 e 2020
+SELECT titulo, sinopse, genero, tipoObra, datalancamento, classificacaoindicativa FROM OBRA 
+WHERE datalancamento BETWEEN '2000-01-01' AND '2020-12-31' ORDER BY datalancamento ASC;
+
+--Consulta 4: contar e listar quantas obras foram produzidas por um determinado estúdio.
+SELECT COUNT(*) from OBRA
+WHERE idEstudio LIKE 'EST000005';
+
+SELECT titulo, sinopse FROM obra
+WHERE idEstudio = 'EST000005';
+
+--Consulta 5: listar pessoas do elenco que trabalharam em determinada obra
+SELECT idPessoa, funcao FROM elenco_obra
+WHERE idObra LIKE 'OBR000001' AND funcao IN ('Ator');
+
+SELECT idObra FROM elenco_obra
+WHERE idPessoa LIKE 'PES00000003';
+
+SELECT titulo, sinopse FROM obra
+WHERE idObra LIKE 'OBR000002';
