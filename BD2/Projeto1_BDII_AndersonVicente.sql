@@ -198,9 +198,10 @@ INSERT INTO Elenco_Obra (idObra, idPessoa, Funcao, salario, bonus) VALUES
 ('OBR000001', 'PES00000001', 'Ator', 15000000.00, 2000000.00),
 ('OBR000001', 'PES00000002', 'Diretor', 20000000.00, 5000000.00),
 ('OBR000001', 'PES00000011', 'Editor', 1200000.00, 150000.00),
-('OBR000001', 'PES00000003', 'Ator', 8000000.00, 500000.00), --Cillian Murphy trabalhou também em Inception
 ----Pessoa com mais de uma obra
+('OBR000001', 'PES00000003', 'Ator', 8000000.00, 500000.00), --Cillian Murphy trabalhou também em Inception
 ('OBR000002', 'PES00000003', 'Ator', 10000000.00, 1000000.00),
+----Demais registros
 ('OBR000002', 'PES00000002', 'Roteirista', 12000000.00, 2000000.00),
 ('OBR000003', 'PES00000005', 'Diretor', 500000.00, 50000.00),
 ('OBR000004', 'PES00000007', 'Roteirista', 2500000.00, 400000.00),
@@ -272,3 +273,36 @@ INSERT INTO Anuncio_Obra (idAnuncio, idObra, momentoExibicaoSegundos, maxExibico
 (106, 'OBR000006', 600, 15000),
 (107, 'OBR000008', 0, 4000),
 (108, 'OBR000006', 1200, 7000);
+
+-------Inserts que não irão funcionar por conta das constraints definidas, para testar sua validade--------------
+--(A partir daqui não roda se o script completo)
+
+-----Obra com classificação indicativa maior que 18 anos-------
+INSERT INTO Obra (idObra, titulo, sinopse, Genero, TipoObra, dataLancamento, classificacaoIndicativa, orcamento, idEstudio) VALUES 
+('OBR000099', 'O Exorcista', 'Quando uma adolescente é possuída por uma entidade misteriosa, sua mãe busca a ajuda de dois padres católicos para salvar sua vida.', 'Terror', 'Filme', '1973-12-26', 21, 5000000.00, 'EST000001');
+
+-----Obra com orçamento negativo-------
+INSERT INTO Obra (idObra, titulo, sinopse, Genero, TipoObra, dataLancamento, classificacaoIndicativa, orcamento, idEstudio) VALUES 
+('OBR000098', 'Halloween: A Noite do Terror', 'Um serial killer assombra a cidade de Haddonfield durante a noite de Halloween.', 'Terror', 'Filme', '1978-10-26', 14, -1000000.00, 'EST000002');
+
+-----Pessoa do elenco com salario e bonus negativos-------
+INSERT INTO Elenco_Obra (idObra, idPessoa, funcao, salario, bonus) VALUES 
+('OBR000001', 'PES00000001', 'Ator', -1500.00, 0.00),
+('OBR000002', 'PES00000001', 'Diretor', 50000.00, -500.00);
+
+-----Plano com inconsistencia entre seu tipo e suas caracteristicas-------
+INSERT INTO Plano (idPlano, tipoPlano, valorMensal, qualidadeMax, maxTelas, exibeAnuncios) VALUES 
+('PLN000099', 'Basico', 9.99, '1080p', '1', 'Sim');
+
+----Plano com valor mensal nulo ou negativo-------
+INSERT INTO Plano (idPlano, tipoPlano, valorMensal, qualidadeMax, maxTelas, exibeAnuncios) VALUES 
+('PLN000098', 'Basico', 0.00, '720p', '1', 'Sim');
+
+----Momento negativo e maxExibicoes zerado de um anuncio em uma obra-------
+INSERT INTO Anuncio_Obra (idAnuncio, idObra, momentoExibicaoSegundos, maxExibicoes) VALUES  
+(101, 'OBR000001', -30, 5000),
+(102, 'OBR000001', 0, 0);
+
+-----Perfil com tipo que não existe-------
+INSERT INTO Perfil (idPerfil, nomePerfil, tipoPerfil, idUsuario) VALUES 
+('P9', 'Perfil Pet', 'Gatos', 'USR00000001');
