@@ -150,9 +150,9 @@ CREATE TABLE Anuncio_Obra (
     CONSTRAINT fk_anuncio_obra_obra FOREIGN KEY (idObra) REFERENCES Obra(idObra)
 );
 
--- ==================================================
--- 1. POPULANDO A TABELA: Estudio (8 registros)
--- ==================================================
+------INSERTS DAS TABELAS--------
+
+-----------Tabela Estudio (8 registros)------------
 INSERT INTO Estudio (idEstudio, nome, paisOrigem, dataFundacao, email) VALUES
 ('EST000001', 'Warner Bros. Pictures', 'Estados Unidos', '1923-04-04', 'contact@warnerbros.com'),
 ('EST000002', 'Universal Pictures', 'Estados Unidos', '1912-04-30', 'info@universalpictures.com'),
@@ -163,9 +163,7 @@ INSERT INTO Estudio (idEstudio, nome, paisOrigem, dataFundacao, email) VALUES
 ('EST000007', 'Studio Ghibli', 'Japao', '1985-06-15', 'contact@ghibli.jp'),
 ('EST000008', 'BBC Studios', 'Reino Unido', '1957-04-01', 'info@bbcstudios.com');
 
--- ==================================================
--- 2. POPULANDO A TABELA: Obra (8 registros)
--- ==================================================
+-----------Tabela Obra(11 registros)------------
 INSERT INTO Obra (idObra, titulo, sinopse, Genero, TipoObra, dataLancamento, classificacaoIndicativa, orcamento, idEstudio) VALUES
 ('OBR000001', 'Inception', 'Um ladrão que rouba segredos corporativos através do uso da tecnologia de compartilhamento de sonhos.', 'Ficcao Cientifica', 'Filme', '2010-07-16', 14, 160000000.00, 'EST000001'),
 ('OBR000002', 'Oppenheimer', 'A história do físico americano J. Robert Oppenheimer e seu papel no Projeto Manhattan.', 'Drama', 'Filme', '2023-07-20', 16, 100000000.00, 'EST000002'),
@@ -179,9 +177,7 @@ INSERT INTO Obra (idObra, titulo, sinopse, Genero, TipoObra, dataLancamento, cla
 ('OBR000010', 'La La Land', 'Um pianista de jazz e uma aspirante a atriz se apaixonam enquanto buscam seus sonhos em Los Angeles.', 'Romance', 'Filme', '2016-12-09', 12, 30000000.00, 'EST000002'),
 ('OBR000011', 'The Witcher', 'O caçador de monstros Geralt de Rivia luta para encontrar seu lugar em um mundo onde as pessoas são mais perversas que as feras.', 'Aventura', 'Serie', '2019-12-20', 18, 92000000.00, 'EST000001');
 
--- ==================================================
--- 3. POPULANDO A TABELA: Elenco (8 registros)
--- ==================================================
+------------Tabela Elenco (10 registros)------------
 INSERT INTO Elenco (idPessoa, nome, nacionalidade, dataNasc, email) VALUES
 ('PES00000001', 'Leonardo DiCaprio', 'Norte-Americano', '1974-11-11', 'leonardo@actor.com'),
 ('PES00000002', 'Christopher Nolan', 'Britanico', '1970-07-30', 'nolan@director.com'),
@@ -196,14 +192,14 @@ INSERT INTO Elenco (idPessoa, nome, nacionalidade, dataNasc, email) VALUES
 ('PES00000011', 'Lee Smith', 'Australiano', '1960-00-00', 'lee.smith@editor.com'),
 ('PES00000012', 'Linus Sandgren', 'Sueco', '1972-12-03', 'linus@sandgren.com');
 
--- ==================================================
--- 4. POPULANDO A TABELA: Elenco_Obra (8 registros)
--- ==================================================
+-----------Tabela Elenco_Obra (13 registros)------------
 INSERT INTO Elenco_Obra (idObra, idPessoa, Funcao, salario, bonus) VALUES
+----Obra com mais de uma pessoa do elenco
 ('OBR000001', 'PES00000001', 'Ator', 15000000.00, 2000000.00),
 ('OBR000001', 'PES00000002', 'Diretor', 20000000.00, 5000000.00),
 ('OBR000001', 'PES00000011', 'Editor', 1200000.00, 150000.00),
 ('OBR000001', 'PES00000003', 'Ator', 8000000.00, 500000.00), --Cillian Murphy trabalhou também em Inception
+----Pessoa com mais de uma obra
 ('OBR000002', 'PES00000003', 'Ator', 10000000.00, 1000000.00),
 ('OBR000002', 'PES00000002', 'Roteirista', 12000000.00, 2000000.00),
 ('OBR000003', 'PES00000005', 'Diretor', 500000.00, 50000.00),
@@ -214,17 +210,13 @@ INSERT INTO Elenco_Obra (idObra, idPessoa, Funcao, salario, bonus) VALUES
 ('OBR000010', 'PES00000012', 'Fotografo', 2500000.00, 200000.00),
 ('OBR000011', 'PES00000010', 'Fotografo', 3000000.00, 400000.00);
 
--- ==================================================
--- 5. POPULANDO A TABELA: Plano (Apenas 3 registros conforme restrição CHECK)
--- ==================================================
+-----------Tabela Plano (3 registros por só existir 3 planos)------------
 INSERT INTO Plano (idPlano, tipoPlano, valorMensal, qualidadeMax, maxTelas, exibeAnuncios) VALUES
 ('PLN000001', 'Basico', 9.99, '720p', '1', 'Sim'),
 ('PLN000002', 'Padrao', 19.99, '1080p', '2', 'Nao'),
 ('PLN000003', 'Premium', 29.99, '4K', '4', 'Nao');
 
--- ==================================================
--- 6. POPULANDO A TABELA: Usuario (8 registros)
--- ==================================================
+-----------Tabela Usuario (8 registros)------------
 INSERT INTO Usuario (idUsuario, nome, telefone, email, senha, idPlano) VALUES
 ('USR00000001', 'Carlos Silva', '11987654321', 'carlos.silva@email.com', 'Senha123', 'PLN000001'),
 ('USR00000002', 'Mariana Santos', '21976543210', 'mariana.santos@email.com', 'Pass321', 'PLN000002'),
@@ -235,22 +227,20 @@ INSERT INTO Usuario (idUsuario, nome, telefone, email, senha, idPlano) VALUES
 ('USR00000007', 'Gabriel Costa', '71921098765', 'gabriel.costa@email.com', 'Gabe9988', 'PLN000001'),
 ('USR00000008', 'Beatriz Alves', '81910987654', 'beatriz.alves@email.com', 'BiaPass77', 'PLN000002');
 
--- ==================================================
--- 7. POPULANDO A TABELA: Perfil (8 registros)
--- ==================================================
+-----------Tabela Perfil (8 registros)------------
 INSERT INTO Perfil (idPerfil, nomePerfil, tipoPerfil, idUsuario) VALUES
+---Perfis diferentes para cada usuário
 ('P1', 'Carlos', 'Adulto', 'USR00000001'),
 ('P2', 'Carlinhos', 'Infantil', 'USR00000001'),
 ('P3', 'Mariana', 'Adulto', 'USR00000002'),
 ('P4', 'Familia Santos', 'Familia', 'USR00000002'),
+--Demais perfis
 ('P5', 'Beto', 'Teen', 'USR00000003'),
 ('P6', 'Paty', 'Adulto', 'USR00000006'),
 ('P7', 'Gabi', 'Teen', 'USR00000007'),
 ('P8', 'BiaKids', 'Infantil', 'USR00000008');
 
--- ==================================================
--- 8. POPULANDO A TABELA: Anunciante (8 registros)
--- ==================================================
+-----------Tabela Anunciante (8 registros)------------
 INSERT INTO Anunciante (idAnunciante, nomeEmpresa, paisSede, email) VALUES
 ('12345678000195', 'Coca-Cola Brasil', 'Brasil', 'mkt@cocacola.com.br'),
 ('98765432000110', 'Samsung Electronics', 'Coreia do Sul', 'ad@samsung.com'),
@@ -261,9 +251,7 @@ INSERT INTO Anunciante (idAnunciante, nomeEmpresa, paisSede, email) VALUES
 ('55667788000144', 'Sony Electronics', 'Japao', 'ads@sony.com'),
 ('77889900000166', 'Natura Cosméticos', 'Brasil', 'contato@natura.com.br');
 
--- ==================================================
--- 9. POPULANDO A TABELA: Anuncio (8 registros)
--- ==================================================
+-----------Tabela Anuncio (8 registros)------------
 INSERT INTO Anuncio (idAnuncio, titulo, duracaoSegundos, videoUrl, idAnunciante) VALUES
 (101, 'Abra a Felicidade - Verao', 30, 'https://cdn.ads.com/cocacola_verao.mp4', '12345678000195'),
 (102, 'Novo Galaxy S24 Ultra', 15, 'https://cdn.ads.com/samsung_s24.mp4', '98765432000110'),
@@ -274,9 +262,7 @@ INSERT INTO Anuncio (idAnuncio, titulo, duracaoSegundos, videoUrl, idAnunciante)
 (107, 'PlayStation 5 Slim', 20, 'https://cdn.ads.com/sony_ps5.mp4', '55667788000144'),
 (108, 'Bem Estar Bem - Natura', 30, 'https://cdn.ads.com/natura_viver.mp4', '77889900000166');
 
--- ==================================================
--- 10. POPULANDO A TABELA: Anuncio_Obra (8 registros)
--- ==================================================
+-----------Tabela Anuncio_Obra (8 registros)------------
 INSERT INTO Anuncio_Obra (idAnuncio, idObra, momentoExibicaoSegundos, maxExibicoes) VALUES
 (101, 'OBR000001', 0, 5000),
 (102, 'OBR000001', 1800, 2000),
