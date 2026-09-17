@@ -171,10 +171,13 @@ INSERT INTO Obra (idObra, titulo, sinopse, Genero, TipoObra, dataLancamento, cla
 ('OBR000002', 'Oppenheimer', 'A história do físico americano J. Robert Oppenheimer e seu papel no Projeto Manhattan.', 'Drama', 'Filme', '2023-07-20', 16, 100000000.00, 'EST000002'),
 ('OBR000003', 'Cidade de Deus', 'Dois meninos crescendo em um bairro violento do Rio de Janeiro encontram caminhos diferentes na vida.', 'Drama', 'Filme', '2002-08-30', 18, 3300000.00, 'EST000003'),
 ('OBR000004', 'A Viagem de Chihiro', 'Uma menina de 10 anos vagueia por um mundo governado por deuses, bruxas e espíritos.', 'Aventura', 'Animacao', '2001-07-20', 0, 19000000.00, 'EST000007'),
-('OBR000005', 'Free Solo', 'Documentário sobre o escalador Alex Honnold tentando escalar o El Capitan sem cordas.', 'Aventura', 'Documentario', '2018-09-28', 10, 2000000.00, 'EST000005'),
+('OBR000005', 'Marty Supreme', 'Cinebiografia ficcional baseada na vida do jogador profissional de pingue-pongue Marty Reisman.', 'Comedia', 'Filme', '2025-12-25', 14, 70000000.00, 'EST000005'),
 ('OBR000006', 'Sintonia', 'Três amigos da favela buscam seus sonhos no funk, no tráfico e na religião.', 'Drama', 'Serie', '2019-08-09', 16, 8000000.00, 'EST000006'),
 ('OBR000007', 'Planet Earth II', 'Série documental sobre a vida selvagem e os habitats naturais do planeta Terra.', 'Aventura', 'Documentario', '2016-11-06', 0, 10000000.00, 'EST000008'),
-('OBR000008', 'Godzilla Minus One', 'O Japão pós-guerra precisa enfrentar uma nova e terrível ameaça gigante.', 'Acao', 'Filme', '2023-11-03', 12, 15000000.00, 'EST000004');
+('OBR000008', 'Godzilla Minus One', 'O Japão pós-guerra precisa enfrentar uma nova e terrível ameaça gigante.', 'Acao', 'Filme', '2023-11-03', 12, 15000000.00, 'EST000004'),
+('OBR000009', 'Hereditary', 'Após a morte da avó reclusa, a família Graham começa a desvendar segredos sombrios e aterrorizantes.', 'Terror', 'Filme', '2018-06-08', 16, 10000000.00, 'EST000005'),
+('OBR000010', 'La La Land', 'Um pianista de jazz e uma aspirante a atriz se apaixonam enquanto buscam seus sonhos em Los Angeles.', 'Romance', 'Filme', '2016-12-09', 12, 30000000.00, 'EST000002'),
+('OBR000011', 'The Witcher', 'O caçador de monstros Geralt de Rivia luta para encontrar seu lugar em um mundo onde as pessoas são mais perversas que as feras.', 'Aventura', 'Serie', '2019-12-20', 18, 92000000.00, 'EST000001');
 
 -- ==================================================
 -- 3. POPULANDO A TABELA: Elenco (8 registros)
@@ -187,7 +190,11 @@ INSERT INTO Elenco (idPessoa, nome, nacionalidade, dataNasc, email) VALUES
 ('PES00000005', 'Fernando Meirelles', 'Brasileiro', '1955-11-09', 'meirelles@o2filmes.com.br'),
 ('PES00000006', 'Alex Honnold', 'Norte-Americano', '1985-08-17', 'alex@honnold.com'),
 ('PES00000007', 'Hayao Miyazaki', 'Japao', '1941-01-05', 'miyazaki@ghibli.jp'),
-('PES00000008', 'David Attenborough', 'Britanico', '1926-05-08', 'david@attenborough.org');
+('PES00000008', 'David Attenborough', 'Britanico', '1926-05-08', 'david@attenborough.org'),
+('PES00000009', 'Timothée Chalamet', 'Franco-Americano', '1995-12-27', 'timothee@chalamet.com'),
+('PES00000010', 'Roger Deakins', 'Britanico', '1949-05-24', 'deakins@cinematography.com'),
+('PES00000011', 'Lee Smith', 'Australiano', '1960-00-00', 'lee.smith@editor.com'),
+('PES00000012', 'Linus Sandgren', 'Sueco', '1972-12-03', 'linus@sandgren.com');
 
 -- ==================================================
 -- 4. POPULANDO A TABELA: Elenco_Obra (8 registros)
@@ -195,13 +202,17 @@ INSERT INTO Elenco (idPessoa, nome, nacionalidade, dataNasc, email) VALUES
 INSERT INTO Elenco_Obra (idObra, idPessoa, Funcao, salario, bonus) VALUES
 ('OBR000001', 'PES00000001', 'Ator', 15000000.00, 2000000.00),
 ('OBR000001', 'PES00000002', 'Diretor', 20000000.00, 5000000.00),
+('OBR000001', 'PES00000011', 'Editor', 1200000.00, 150000.00),
 ('OBR000001', 'PES00000003', 'Ator', 8000000.00, 500000.00), --Cillian Murphy trabalhou também em Inception
 ('OBR000002', 'PES00000003', 'Ator', 10000000.00, 1000000.00),
 ('OBR000002', 'PES00000002', 'Roteirista', 12000000.00, 2000000.00),
 ('OBR000003', 'PES00000005', 'Diretor', 500000.00, 50000.00),
 ('OBR000004', 'PES00000007', 'Roteirista', 2500000.00, 400000.00),
-('OBR000005', 'PES00000006', 'Produtor', 1800000.00, 300000.00),
-('OBR000007', 'PES00000008', 'Ator', 1200000.00, 200000.00);
+('OBR000005', 'PES00000009', 'Ator', 1800000.00, 300000.00),
+('OBR000007', 'PES00000008', 'Ator', 1200000.00, 200000.00),
+('OBR000009', 'PES00000006', 'Produtor', 1800000.00, 300000.00),
+('OBR000010', 'PES00000012', 'Fotografo', 2500000.00, 200000.00),
+('OBR000011', 'PES00000010', 'Fotografo', 3000000.00, 400000.00);
 
 -- ==================================================
 -- 5. POPULANDO A TABELA: Plano (Apenas 3 registros conforme restrição CHECK)
