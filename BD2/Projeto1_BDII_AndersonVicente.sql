@@ -195,6 +195,7 @@ INSERT INTO Elenco (idPessoa, nome, nacionalidade, dataNasc, email) VALUES
 INSERT INTO Elenco_Obra (idObra, idPessoa, Funcao, salario, bonus) VALUES
 ('OBR000001', 'PES00000001', 'Ator', 15000000.00, 2000000.00),
 ('OBR000001', 'PES00000002', 'Diretor', 20000000.00, 5000000.00),
+('OBR000001', 'PES00000003', 'Ator', 8000000.00, 500000.00), --Cillian Murphy trabalhou também em Inception
 ('OBR000002', 'PES00000003', 'Ator', 10000000.00, 1000000.00),
 ('OBR000002', 'PES00000002', 'Roteirista', 12000000.00, 2000000.00),
 ('OBR000003', 'PES00000005', 'Diretor', 500000.00, 50000.00),
@@ -245,7 +246,7 @@ INSERT INTO Anunciante (idAnunciante, nomeEmpresa, paisSede, email) VALUES
 ('45678912000133', 'Nike do Brasil', 'Estados Unidos', 'comercial@nike.com.br'),
 ('11223344000155', 'Ambev S.A.', 'Brasil', 'contato@ambev.com.br'),
 ('66778899000122', 'Amazon Services', 'Estados Unidos', 'ads@amazon.com'),
-('33445566000188', 'Itaú Unibanco', 'Brasil', 'marketing@itau.com.br'),
+('33445566000188', 'Banco Itaú', 'Brasil', 'marketing@itau.com.br'),
 ('55667788000144', 'Sony Electronics', 'Japao', 'ads@sony.com'),
 ('77889900000166', 'Natura Cosméticos', 'Brasil', 'contato@natura.com.br');
 
