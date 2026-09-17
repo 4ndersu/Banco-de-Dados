@@ -261,7 +261,8 @@ INSERT INTO Anuncio (idAnuncio, titulo, duracaoSegundos, videoUrl, idAnunciante)
 (105, 'AWS Cloud Solutions', 45, 'https://cdn.ads.com/aws_cloud.mp4', '66778899000122'),
 (106, 'Feito de Futuro - Itaú', 30, 'https://cdn.ads.com/itau_futuro.mp4', '33445566000188'),
 (107, 'PlayStation 5 Slim', 20, 'https://cdn.ads.com/sony_ps5.mp4', '55667788000144'),
-(108, 'Bem Estar Bem - Natura', 30, 'https://cdn.ads.com/natura_viver.mp4', '77889900000166');
+(108, 'Bem Estar Bem - Natura', 30, 'https://cdn.ads.com/natura_viver.mp4', '77889900000166'),
+(109, 'Coisa Nossa - Gemaplys e a Culinaria Absurda', 45, 'https://cdn.streaming.com/ads/guarana_gemaplys_coisanossa.mp4', '11223344000155');
 
 -----------Tabela Anuncio_Obra (8 registros)------------
 INSERT INTO Anuncio_Obra (idAnuncio, idObra, momentoExibicaoSegundos, maxExibicoes) VALUES
@@ -272,7 +273,8 @@ INSERT INTO Anuncio_Obra (idAnuncio, idObra, momentoExibicaoSegundos, maxExibico
 (105, 'OBR000005', 0, 3000),
 (106, 'OBR000006', 600, 15000),
 (107, 'OBR000008', 0, 4000),
-(108, 'OBR000006', 1200, 7000);
+(108, 'OBR000006', 1200, 7000),
+(109, 'OBR000007', 180, 10000);
 
 -------Inserts que não irão funcionar por conta das constraints definidas, para testar sua validade--------------
 --(A partir daqui não roda se o script completo)
@@ -344,3 +346,18 @@ WHERE idPessoa LIKE 'PES00000003';
 
 SELECT titulo, sinopse FROM obra
 WHERE idObra LIKE 'OBR000002';
+
+--Consulta 6: listar anúncios que foram exibidos em obras com duração entre 5 e 30 minutos
+SELECT idAnuncio, idObra, momentoexibicaosegundos FROM anuncio_obra
+WHERE momentoexibicaosegundos BETWEEN 300 AND 1800;
+
+--Consulta 7: contar quantos perfis do tipo "Familia" estão cadastrados
+SELECT COUNT(*) FROM Perfil
+WHERE tipoperfil IN('Infantil');
+
+--Consulta 8: listar os anunciantes que possuem email com domínio ".br" e contar quantos anuncios tem
+SELECT nomeEmpresa FROM anunciante
+WHERE email LIKE '%.br';
+
+SELECT COUNT(*) FROM anuncio 
+WHERE idAnunciante = '11223344000155';
