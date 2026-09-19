@@ -239,7 +239,8 @@ INSERT INTO Perfil (idPerfil, nomePerfil, tipoPerfil, idUsuario) VALUES
 ('P5', 'Beto', 'Teen', 'USR00000003'),
 ('P6', 'Paty', 'Adulto', 'USR00000006'),
 ('P7', 'Gabi', 'Teen', 'USR00000007'),
-('P8', 'BiaKids', 'Infantil', 'USR00000008');
+('P8', 'BiaKids', 'Infantil', 'USR00000008')
+('P9', 'Configuracoes', 'Adulto', 'USR00000001');
 
 -----------Tabela Anunciante (8 registros)------------
 INSERT INTO Anunciante (idAnunciante, nomeEmpresa, paisSede, email) VALUES
@@ -310,32 +311,32 @@ INSERT INTO Perfil (idPerfil, nomePerfil, tipoPerfil, idUsuario) VALUES
 ('P9', 'Perfil Pet', 'Gatos', 'USR00000001');
 
 ---Consulta 1: pesquisar obras do gênero Drama, ordenadas pela data de lançamento mais recente
-SELECT titulo, sinopse, genero, tipoObra, datalancamento, classificacaoindicativa FROM OBRA 
+SELECT titulo, sinopse, genero, tipoObra, datalancamento, classificacaoindicativa FROM Obra 
 WHERE genero IN ('Drama') ORDER BY datalancamento DESC;
 
 ---Consulta 2: pesquisar obras de acordo com a palavra chave de seu titulo ou sinopse
 --Exemplo 1: palavra "vida"
-SELECT titulo, sinopse, genero, tipoObra, datalancamento, classificacaoindicativa FROM OBRA 
+SELECT titulo, sinopse, genero, tipoObra, datalancamento, classificacaoindicativa FROM Obra 
 WHERE titulo ILIKE '%vida%' OR sinopse ILIKE '%vida%';
 
 --Exemplo 2: palavra "morte"
-SELECT titulo, sinopse, genero, tipoObra, datalancamento, classificacaoindicativa FROM OBRA 
+SELECT titulo, sinopse, genero, tipoObra, datalancamento, classificacaoindicativa FROM Obra 
 WHERE titulo ILIKE '%morte%' OR sinopse ILIKE '%morte%';
 
 --Exemplo 3: palavra "guerra"
-SELECT titulo, sinopse, genero, tipoObra, datalancamento, classificacaoindicativa FROM OBRA 
+SELECT titulo, sinopse, genero, tipoObra, datalancamento, classificacaoindicativa FROM Obra 
 WHERE titulo ILIKE '%guerra%' OR sinopse ILIKE '%guerra%';
 
----Consulta 3: pesquisar obras lançadas entre os anos 2000 e 2020
-SELECT titulo, sinopse, genero, tipoObra, datalancamento, classificacaoindicativa FROM OBRA 
-WHERE datalancamento BETWEEN '2000-01-01' AND '2020-12-31' ORDER BY datalancamento ASC;
+---Consulta 3: pesquisar obras lançadas entre os anos 2010 e 2020
+SELECT titulo, sinopse, genero, tipoObra, datalancamento, classificacaoindicativa FROM Obra 
+WHERE datalancamento BETWEEN '2010-01-01' AND '2020-12-31' ORDER BY datalancamento ASC;
 
 --Consulta 4: contar e listar quantas obras foram produzidas por um determinado estúdio.
 SELECT COUNT(*) from OBRA
 WHERE idEstudio LIKE 'EST000005';
 
 SELECT titulo, sinopse FROM obra
-WHERE idEstudio = 'EST000005';
+WHERE idEstudio LIKE 'EST000005';
 
 --Consulta 5: listar pessoas do elenco que trabalharam em determinada obra
 SELECT idPessoa, funcao FROM elenco_obra
@@ -361,3 +362,7 @@ WHERE email LIKE '%.br';
 
 SELECT COUNT(*) FROM anuncio 
 WHERE idAnunciante = '11223344000155';
+
+--Consulta 9, ver perfils associados a um determinado usuário e listar seus tipos
+SELECT nomeperfil, tipoperfil FROM perfil
+WHERE idUsuario LIKE 'USR00000001';
