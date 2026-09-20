@@ -1,11 +1,17 @@
 --ENUMs para definir as regras de negócio e os tipos de dados específicos
+
+--Gênero das obras
 CREATE TYPE genero AS ENUM ('Acao', 'Aventura', 'Comedia', 'Drama', 'Ficcao Cientifica', 'Romance', 'Terror');
+--Tipo de obra
 CREATE TYPE tipoObra AS ENUM ('Filme', 'Serie', 'Documentario', 'Animacao');
+--Função das pessoas do elenco
 CREATE TYPE funcao AS ENUM ('Ator', 'Diretor', 'Roteirista', 'Produtor', 'Fotografo', 'Editor');
+--Tipos de planos de assinatura, sua qualidade máxima de transmissão, máximo de telas disponíveis e se exibe anúncios ou não
 CREATE TYPE tipoPlano AS ENUM ('Basico', 'Padrao', 'Premium');
 CREATE TYPE qualidadeMax AS ENUM ('720p', '1080p', '4K');
 CREATE TYPE maxTelas AS ENUM ('1', '2', '4');
 CREATE TYPE exibeAnuncios AS ENUM ('Sim', 'Nao');
+--Tipos possíveis de perfis de usuário
 CREATE TYPE tipoPerfil AS ENUM ('Adulto', 'Infantil', 'Teen', 'Familia');
 
 ---------TABELAS------------
@@ -58,8 +64,8 @@ CREATE TABLE Elenco_Obra (
     salario DECIMAL(15,2) NOT NULL DEFAULT 0.0 CONSTRAINT salario_positivo CHECK (salario >= 0.0),
     bonus DECIMAL(15,2) NOT NULL DEFAULT 0.0 CONSTRAINT bonus_positivo CHECK (bonus >= 0.0),
 
-    --Chave primária composta para garantir a unicidade da combinação de obra e pessoa
-    CONSTRAINT pk_composta PRIMARY KEY (idObra, idPessoa),
+    --Chave primária composta para garantir a unicidade da combinação de obra, elenco e função
+    CONSTRAINT pk_composta PRIMARY KEY (idObra, idPessoa, funcao),
     
     --Chaves estrangeiras para associar obras e pessoas do elenco
     CONSTRAINT fk_obra FOREIGN KEY (idObra) REFERENCES Obra(idObra),
@@ -239,7 +245,7 @@ INSERT INTO Perfil (idPerfil, nomePerfil, tipoPerfil, idUsuario) VALUES
 ('P5', 'Beto', 'Teen', 'USR00000003'),
 ('P6', 'Paty', 'Adulto', 'USR00000006'),
 ('P7', 'Gabi', 'Teen', 'USR00000007'),
-('P8', 'BiaKids', 'Infantil', 'USR00000008')
+('P8', 'BiaKids', 'Infantil', 'USR00000008'),
 ('P9', 'Configuracoes', 'Adulto', 'USR00000001');
 
 -----------Tabela Anunciante (8 registros)------------
