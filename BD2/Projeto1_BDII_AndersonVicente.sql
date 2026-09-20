@@ -183,7 +183,7 @@ INSERT INTO Obra (idObra, titulo, sinopse, Genero, TipoObra, dataLancamento, cla
 ('OBR000010', 'La La Land', 'Um pianista de jazz e uma aspirante a atriz se apaixonam enquanto buscam seus sonhos em Los Angeles.', 'Romance', 'Filme', '2016-12-09', 12, 30000000.00, 'EST000002'),
 ('OBR000011', 'The Witcher', 'O caçador de monstros Geralt de Rivia luta para encontrar seu lugar em um mundo onde as pessoas são mais perversas que as feras.', 'Aventura', 'Serie', '2019-12-20', 18, 92000000.00, 'EST000001');
 
-------------Tabela Elenco (10 registros)------------
+------------Tabela Elenco (12 registros)------------
 INSERT INTO Elenco (idPessoa, nome, nacionalidade, dataNasc, email) VALUES
 ('PES00000001', 'Leonardo DiCaprio', 'Norte-Americano', '1974-11-11', 'leonardo@actor.com'),
 ('PES00000002', 'Christopher Nolan', 'Britanico', '1970-07-30', 'nolan@director.com'),
@@ -234,7 +234,7 @@ INSERT INTO Usuario (idUsuario, nome, telefone, email, senha, idPlano) VALUES
 ('USR00000007', 'Gabriel Costa', '71921098765', 'gabriel.costa@email.com', 'Gabe9988', 'PLN000001'),
 ('USR00000008', 'Beatriz Alves', '81910987654', 'beatriz.alves@email.com', 'BiaPass77', 'PLN000002');
 
------------Tabela Perfil (8 registros)------------
+-----------Tabela Perfil (9 registros)------------
 INSERT INTO Perfil (idPerfil, nomePerfil, tipoPerfil, idUsuario) VALUES
 ---Perfis diferentes para cada usuário
 ('P1', 'Carlos', 'Adulto', 'USR00000001'),
@@ -259,7 +259,7 @@ INSERT INTO Anunciante (idAnunciante, nomeEmpresa, paisSede, email) VALUES
 ('55667788000144', 'Sony Electronics', 'Japao', 'ads@sony.com'),
 ('77889900000166', 'Natura Cosméticos', 'Brasil', 'contato@natura.com.br');
 
------------Tabela Anuncio (8 registros)------------
+-----------Tabela Anuncio (9 registros)------------
 INSERT INTO Anuncio (idAnuncio, titulo, duracaoSegundos, videoUrl, idAnunciante) VALUES
 (101, 'Abra a Felicidade - Verao', 30, 'https://cdn.ads.com/cocacola_verao.mp4', '12345678000195'),
 (102, 'Novo Galaxy S24 Ultra', 15, 'https://cdn.ads.com/samsung_s24.mp4', '98765432000110'),
@@ -271,7 +271,7 @@ INSERT INTO Anuncio (idAnuncio, titulo, duracaoSegundos, videoUrl, idAnunciante)
 (108, 'Bem Estar Bem - Natura', 30, 'https://cdn.ads.com/natura_viver.mp4', '77889900000166'),
 (109, 'Coisa Nossa - Gemaplys e a Culinaria Absurda', 45, 'https://cdn.streaming.com/ads/guarana_gemaplys_coisanossa.mp4', '11223344000155');
 
------------Tabela Anuncio_Obra (8 registros)------------
+-----------Tabela Anuncio_Obra (9 registros)------------
 INSERT INTO Anuncio_Obra (idAnuncio, idObra, momentoExibicaoSegundos, maxExibicoes) VALUES
 (101, 'OBR000001', 0, 5000),
 (102, 'OBR000001', 1800, 2000),
