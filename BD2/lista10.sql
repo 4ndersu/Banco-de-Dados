@@ -173,5 +173,14 @@ WHERE salario = (SELECT MAX(salario) FROM FUNCIONARIO
 WHERE gênero = 'M');
 
 --Q13
-SELECT dnr, datanasc FROM FUNCIONARIO
-WHERE dnr IS NOT NULL AND dnr = (SELECT MAX(datanasc) FUNCIONARIO);
+SELECT dnr, MAX(datanasc) FROM FUNCIONARIO
+WHERE dnr IS NOT NULL
+GROUP BY dnr;
+
+--Q14
+SELECT gênero, COUNT(pnome), MIN(salario), MAX(salario) FROM FUNCIONARIO
+GROUP BY gênero;
+
+--Q15
+SELECT pnome, dnr, salario FROM FUNCIONARIO
+WHERE dnr = '4' AND salario = (SELECT MAX(salario) FROM FUNCIONARIO); 
