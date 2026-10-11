@@ -1,0 +1,32 @@
+CREATE TABLE curso (
+	codigo VARCHAR(9) PRIMARY KEY,
+	nome VARCHAR(100) NOT NULL,
+	CH INT NOT NULL CONSTRAINT CH_valida CHECK (CH > 0)
+);
+
+CREATE TABLE pessoa (
+	CPF VARCHAR(11) PRIMARY KEY,
+	nome VARCHAR(100) NOT NULL,
+	email VARCHAR(100) NOT NULL UNIQUE,
+	dataNasc DATE NOT NULL
+);
+
+CREATE TABLE aluno (
+	matricula VARCHAR(9) PRIMARY KEY,
+	CR DECIMAL(3, 2) NOT NULL DEFAULT 0.0 CONSTRAINT CR_valido CHECK(CR >= 0.0),
+	bolsa VARCHAR(20) DEFAULT 'nao tem'
+) INHERITS (pessoa);
+
+CREATE TABLE professor (
+    idProf VARCHAR(20) PRIMARY KEY,
+	areaAtuacao VARCHAR(50) NOT NULL
+) INHERITS (pessoa);
+
+CREATE TABLE inscricao (
+	nmrInscricao VARCHAR(10) PRIMARY KEY,
+	idAluno VARCHAR(9) NOT NULL UNIQUE,
+	idCurso VARCHAR(9) NOT NULL,
+
+	CONSTRAINT fk_aluno_inscricao FOREIGN KEY (idAluno) REFERENCES aluno(matricula),
+	CONSTRAINT fk_curso_inscricao FOREIGN KEY (idCurso) REFERENCES curso(codigo)
+);
