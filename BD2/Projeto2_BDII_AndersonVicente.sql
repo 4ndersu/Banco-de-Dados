@@ -274,3 +274,43 @@ INSERT INTO Anuncio_Obra (idAnuncio, idObra, momentoExibicaoSegundos, maxExibico
 (107, 'OBR000008', 0, 4000),
 (108, 'OBR000006', 1200, 7000),
 (109, 'OBR000007', 180, 10000);
+
+--Consulta aninhada: obras mais antigas para as mais recentes
+SELECT titulo FROM obra
+WHERE datalancamento IN (SELECT datalancamento FROM obra
+) ORDER BY datalancamento
+
+--Consulta aninhada e MAX
+SELECT E.nome FROM Elenco E
+WHERE idPessoa IN (SELECT idPessoa FROM elenco_obra 
+WHERE salario = (SELECT MAX(salario) FROM elenco_obra))
+
+--GROUP BY e COUNT
+SELECT P.tipoPlano, COUNT(idUsuario)  FROM plano P, usuario U
+WHERE P.tipoPlano = U.tipoplano
+GROUP BY P.tipoPlano
+
+--GROUP BY e AVG
+SELECT O.titulo, ROUND(AVG(A.momentoExibicaoSegundos)::numeric, 2) AS mediaTempoAnuncio  FROM Obra O, Anuncio_obra A
+WHERE O.idObra = A.idObra
+GROUP BY O.titulo;
+
+--Uso de pipes
+SELECT E.nome || ' trabalha como ' || EO.funcao || ' na obra ' || O.titulo AS descricao_trabalho 
+FROM Elenco E, Elenco_obra EO, Obra O
+WHERE E.idPessoa = EO.idPessoa 
+  AND EO.idObra = O.idObra;
+
+--HAVING
+SELECT P.tipoPerfil, COUNT(*) AS qtdPerfis FROM Perfil P, Usuario U
+WHERE P.idUsuario = U.idUsuario
+GROUP BY P.tipoPerfil
+HAVING(COUNT(*)) >= 2
+
+--LIKE
+SELECT 'O Estudio ' || nome || ' esta localizado em ' || paisOrigem FROM Estudio 
+WHERE paisorigem LIKE 'Japao' OR paisOrigem LIKE 'Estados Unidos' 
+
+--OVERLAY e SUBSTRING
+SELECT 'O usuário ' || SUBSTRING(U.nome FROM 1 FOR 1) || '. ' || SUBSTRING(U.nome FROM POSITION(' ' IN U.nome) + 1) || ' possui email ' || U.email || ' e senha ' || OVERLAY(senha PLACING '********' FROM 1 FOR 8)
+FROM Usuario U
