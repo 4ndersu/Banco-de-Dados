@@ -63,11 +63,11 @@ INSERT INTO professor (CPF, nome, email, dataNasc, idProf, areaAtuacao) VALUES
 
 --Cursos
 INSERT INTO curso (codigo, nome, CH, id_professor_coordenador) VALUES 
-('SI201', 'Analise e Desenvolviemnto de sistemas', 80, 'PROF01'),
-('DIR101', 'Direito', 60, 'PROF02'),
-('ADM301', 'Gestão de Negócios', 100, 'PROF03'),
-('PSI401', 'Psicologia', 80, 'PROF04'),
-('DSG501', 'Design Visual', 60, 'PROF05');
+('SI201', 'Analise e Desenvolviemnto de sistemas', 2400, 'PROF01'),
+('DIR101', 'Direito', 3700, 'PROF02'),
+('ADM301', 'Gestão de Negócios', 1600, 'PROF03'),
+('PSI401', 'Psicologia', 3200, 'PROF04'),
+('DSG501', 'Design Visual', 1200, 'PROF05');
 
 --Alunos
 INSERT INTO aluno (CPF, nome, email, dataNasc, matricula, CR, bolsa) VALUES 
@@ -107,41 +107,42 @@ INSERT INTO inscricao (nmrInscricao, idAluno, idCurso) VALUES
 
 -- 2-a)Selecionar o nome do curso e a quantidade de alunos inscritos em cada curso 
 --Utiliza agrupamento e contagem
-SELECT C.nome, COUNT(I.idCurso) AS qtdAlunos FROM Curso C, inscricao I
+SELECT C.nome, COUNT(I.idCurso) AS qtdAlunos FROM curso C, inscricao I
 WHERE C.codigo = I.idCurso
 GROUP BY C.nome;
 
 -- 2-b)Seleciona o nome dos cursos que possuem mais de 1 aluno inscrito
 --nao mostra psicologia porque só tem um aluno
-SELECT C.nome FROM Curso C
-WHERE (SELECT COUNT(I.idCurso)FROM inscricao I
-WHERE I.idCurso = C.codigo) > 1; --Consulta aninhada para contar a quantidade de alunos inscritos em cada curso
+SELECT C.nome, COUNT(I.idAluno) AS qtdAlunos FROM curso C, inscricao I
+WHERE C.codigo = I.idCurso
+GROUP BY C.nome 
+HAVING(COUNT(I.idAluno))> 1;--Having para filtrar os cursos com mais de 1 aluno inscrito
 
 -- 2-c)Seleciona nome e curso com maior carga horaria registrada
-SELECT C.nome, C.CH  FROM Curso C
-WHERE C.CH = (SELECT MAX(CH) FROM Curso); --Consulta aninhada para encontrar maior CH com MAX
+SELECT C.nome, C.CH AS maiorCH FROM curso C
+WHERE C.CH = (SELECT MAX(CH) FROM curso); --Consulta aninhada para encontrar maior CH com MAX
 
 -- 2-d)Seleciona a média da carga horaria dos cursos e arredonda para 2 casas decimais
-SELECT ROUND(AVG(C.CH)::NUMERIC, 2) AS MediaCH FROM CURSO C;
+SELECT 'Media de carha horaria dos cursos é: ' || ROUND(AVG(CH)::NUMERIC, 2) || ' horas' AS MediaCH  FROM curso;
 
 -- 2-e)Seleciona o nome do curso e a carga horaria dos cursos menores que a média da carga horaria, e utiliza uma concatenacao para criar um anuncio padronizado 
-SELECT 'Faça o curso ' || C.nome || ' em apenas ' || C.CH || ' horas!' AS anuncio FROM CURSO C
-WHERE (SELECT AVG(CH) FROM CURSO) > C.CH;
+SELECT 'Faça o curso ' || C.nome || ' em apenas ' || C.CH || ' horas!' AS anuncio FROM curso C
+WHERE (SELECT AVG(CH) FROM curso) > C.CH;
 
 -- 2-f)Seleciona o nome do aluno e o dominio do email, e atraves da funcao SUBSTRING extrai cada dominio do email
 --Uma consulta diferente para cada dominio diferente
 
---Utilizando SUBSTRING para extrair o dominio do gmail
+--Utilizando SUBSTRING para extrair o email com gmail
 --Mostra email completo
-SELECT A.nome, A.email AS dominioEmail FROM ALUNO A
-WHERE SUBSTRING(A.email FROM 'gmail.com') IS NOT NULL;
+SELECT nome, email FROM ALUNO 
+WHERE SUBSTRING(email FROM 'gmail.com') IS NOT NULL;
 
---Utilizando STRPOS para extrair o dominio do hotmail
+--Utilizando STRPOS para extrair o email com hotmail
 --Mostra o email completo
-SELECT A.nome, A.email AS dominioEmail FROM ALUNO A
-WHERE STRPOS(A.email, 'hotmail.com') > 0;
+SELECT nome, email FROM ALUNO 
+WHERE STRPOS(email, 'hotmail.com') > 0;
 
 --Utilizando SUBSTRING para extrair o dominio do outlook
 --Mostra só o dominio do email
-SELECT A.nome, SUBSTRING(A.email FROM 'outlook.com') AS dominioEmail FROM ALUNO A
-WHERE SUBSTRING(A.email FROM 'outlook.com') IS NOT NULL;
+SELECT nome, SUBSTRING(email FROM 'outlook.com') AS dominioEmail FROM ALUNO 
+WHERE SUBSTRING(email FROM 'outlook.com') IS NOT NULL;
