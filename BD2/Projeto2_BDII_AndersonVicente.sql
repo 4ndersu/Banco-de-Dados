@@ -81,7 +81,7 @@ CREATE TABLE Plano (
     --Alteracao, caracteristicas do plano agora são colunas normais ao invés de enum
     QualidadeMax VARCHAR(10) NOT NULL,
     maxTelas INT NOT NULL CONSTRAINT maxTelas_positivo CHECK (maxTelas > 0),
-    exibeAnuncios BOOLEAN NOT NULL DEFAULT TRUE,
+    exibeAnuncios BOOLEAN NOT NULL DEFAULT TRUE
 
     --Alteracao, constraint check composta de plano válido removida
 );
