@@ -275,7 +275,21 @@ INSERT INTO Anuncio_Obra (idAnuncio, idObra, momentoExibicaoSegundos, maxExibico
 (108, 'OBR000006', 1200, 7000),
 (109, 'OBR000007', 180, 10000);
 
---2-a)LIKE e h)PIPES para concatenar strings e filtrar por país de origem dos estúdios
+--2-a)Backup da tabela Plano utilizando LIKE
+CREATE TABLE backupPlano(
+    idBackup SERIAL PRIMARY KEY,
+    LIKE Plano INCLUDING ALL
+);
+
+--Inserindo os dados da tabela Plano na tabela backupPlano
+INSERT INTO backupPlano SELECT * FROM Plano;
+
+------Exibindo os dados da tabela backupPlano
+SELECT * FROM backupPlano;
+
+------CONSULTAS
+
+--2-h)PIPES para concatenar strings e filtrar por país de origem dos estúdios
 SELECT 'O Estudio ' || nome || ' esta localizado em ' || paisOrigem AS "localizacaoEstudio"
 FROM Estudio 
 WHERE paisOrigem LIKE '%Unidos' OR paisOrigem LIKE 'Japao';
