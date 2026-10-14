@@ -275,41 +275,43 @@ INSERT INTO Anuncio_Obra (idAnuncio, idObra, momentoExibicaoSegundos, maxExibico
 (108, 'OBR000006', 1200, 7000),
 (109, 'OBR000007', 180, 10000);
 
---Consulta aninhada: obras mais antigas para as mais recentes
-SELECT titulo FROM obra
-WHERE datalancamento IN (SELECT datalancamento FROM obra
-) ORDER BY datalancamento
+--2-a)LIKE e h)PIPES para concatenar strings e filtrar por país de origem dos estúdios
+SELECT 'O Estudio ' || nome || ' esta localizado em ' || paisOrigem AS "localizacaoEstudio"
+FROM Estudio 
+WHERE paisOrigem LIKE '%Unidos' OR paisOrigem LIKE 'Japao';
 
---Consulta aninhada e MAX
-SELECT E.nome FROM Elenco E
-WHERE idPessoa IN (SELECT idPessoa FROM elenco_obra 
-WHERE salario = (SELECT MAX(salario) FROM elenco_obra))
+--b)Consulta aninhada e e)AVG para filtrar obras com orçamento acima da média do catálogo em ordem decrescente
+SELECT titulo, orcamento 
+FROM Obra 
+WHERE orcamento > (SELECT AVG(orcamento) FROM Obra)
+ORDER BY orcamento DESC;
 
---GROUP BY e COUNT
-SELECT P.tipoPlano, COUNT(idUsuario)  FROM plano P, usuario U
+--b)Consulta aninhada e f)MAX para listar pessoas do elenco com maior salário registrado em qualquer obra
+SELECT E.nome AS "valiosoElenco" FROM Elenco E
+WHERE E.idPessoa IN (SELECT EO.idPessoa FROM elenco_obra EO
+WHERE EO.salario = (SELECT MAX(salario) FROM elenco_obra));
+
+--c)GROUP BY para contar a quantidade de usuários por tipo de plano, e exibir o resultado
+SELECT P.tipoPlano, COUNT(U.idUsuario) AS "qtdUsuarios" FROM Plano P, Usuario U
 WHERE P.tipoPlano = U.tipoplano
-GROUP BY P.tipoPlano
+GROUP BY P.tipoPlano;
 
---GROUP BY e AVG
-SELECT O.titulo, ROUND(AVG(A.momentoExibicaoSegundos)::numeric, 2) AS mediaTempoAnuncio  FROM Obra O, Anuncio_obra A
+--c)GROUP BY e e)AVG para calcular a média de tempo de exibição dos anúncios por obra, e arredondar o resultado para 2 casas decimais
+SELECT O.titulo, ROUND(AVG(A.momentoExibicaoSegundos)::numeric, 2) AS "mediaTempoAnuncio" FROM Obra O, Anuncio_obra A
 WHERE O.idObra = A.idObra
 GROUP BY O.titulo;
 
---Uso de pipes
-SELECT E.nome || ' trabalha como ' || EO.funcao || ' na obra ' || O.titulo AS descricao_trabalho 
+--h)Uso de pipes para concatenar strings e exibir uma descrição do trabalho de cada pessoa do elenco em cada obra
+SELECT E.nome || ' trabalha como ' || EO.funcao || ' na obra ' || O.titulo AS "descricao_trabalho" 
 FROM Elenco E, Elenco_obra EO, Obra O
 WHERE E.idPessoa = EO.idPessoa 
   AND EO.idObra = O.idObra;
 
---HAVING
-SELECT P.tipoPerfil, COUNT(*) AS qtdPerfis FROM Perfil P, Usuario U
+--c)GROUP BY e d)HAVING para filtrar os tipos de perfil que possuem 2 ou mais usuários associados, e exibir a quantidade de perfis encontrados
+SELECT P.tipoPerfil, COUNT(*) AS "qtdPerfis" FROM Perfil P, Usuario U
 WHERE P.idUsuario = U.idUsuario
 GROUP BY P.tipoPerfil
-HAVING(COUNT(*)) >= 2
-
---LIKE
-SELECT 'O Estudio ' || nome || ' esta localizado em ' || paisOrigem FROM Estudio 
-WHERE paisorigem LIKE 'Japao' OR paisOrigem LIKE 'Estados Unidos' 
+HAVING(COUNT(*)) >= 3
 
 --OVERLAY e SUBSTRING
 SELECT 'O usuário ' || SUBSTRING(U.nome FROM 1 FOR 1) || '. ' || SUBSTRING(U.nome FROM POSITION(' ' IN U.nome) + 1) || ' possui email ' || U.email || ' e senha ' || OVERLAY(senha PLACING '********' FROM 1 FOR 8)
