@@ -326,6 +326,6 @@ WHERE P.idUsuario = U.idUsuario
 GROUP BY P.tipoPerfil
 HAVING(COUNT(*)) >= 3
 
---OVERLAY e SUBSTRING
+--h)OVERLAY e g)SUBSTRING
 SELECT 'O usuário ' || SUBSTRING(U.nome FROM 1 FOR 1) || '. ' || SUBSTRING(U.nome FROM POSITION(' ' IN U.nome) + 1) || ' possui email ' || U.email || ' e senha ' || OVERLAY(senha PLACING '********' FROM 1 FOR 8)
-FROM Usuario U
+AS "Relatório" FROM Usuario U
