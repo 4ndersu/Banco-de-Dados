@@ -275,9 +275,8 @@ INSERT INTO Anuncio_Obra (idAnuncio, idObra, momentoExibicaoSegundos, maxExibico
 (108, 'OBR000006', 1200, 7000),
 (109, 'OBR000007', 180, 10000);
 
---2-a)Backup da tabela Plano utilizando LIKE
+--2-a)Backup da tabela Plano utilizando LIKE e ICLUDING ALL para copiar suas restrições também
 CREATE TABLE backupPlano(
-    idBackup SERIAL PRIMARY KEY,
     LIKE Plano INCLUDING ALL
 );
 
